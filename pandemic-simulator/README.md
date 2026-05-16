@@ -37,7 +37,7 @@ streamlit run app.py
 The dashboard gives you:
 - **Role picker** : toggle any combination of the 5 player roles in the sidebar
 - **Animated network** : watch the city graph light up red step-by-step, with Plotly hover for per-city stats
-- **Play / Pause / Scrub** : step through frames at any speed with the slider
+- **Play/Pause/Scrub** : step through frames at any speed with the slider
 - **Live timeline** : per-city infection curves and cure-progress update as the animation plays
 - **Monte Carlo panel** : run a quick role comparison (50–500 sims) from inside the app
 
@@ -101,7 +101,7 @@ pandemic-simulator/
 └── requirements.txt
 ```
 
-## Key modelling decisions
+## Important modelling decisions
 - **Stochastic not deterministic** : every run uses `numpy.random.default_rng` with a settable seed, so results are reproducible but still reflect real uncertainty
 - **Discrete-time SIR** : chosen over continuous ODE models because it maps naturally to board-game mechanics (turns/steps) while still being mathematically grounded
 - **Binomial spread** : `Binomial(S, β·I/N)` captures demographic stochasticity better than a simple rate equation at the city scale
