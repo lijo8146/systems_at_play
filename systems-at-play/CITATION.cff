@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this repository in a course, talk, or paper, please cite it as below."
+type: software
+title: "Systems at Play: Computational Experiments in Games, Puzzles, and Simulation"
+abstract: >
+  A curated collection of computational experiments using games, puzzles, and
+  simulations as entry points for exploring probability, strategy, network dynamics,
+  search algorithms, and systems modeling. Designed for educational use.
+license: MIT
+repository-code: "https://github.com/yourusername/systems-at-play"
+keywords:
+  - simulation
+  - probability
+  - game theory
+  - systems thinking
+  - computational modeling
+  - educational
+  - Monte Carlo
+  - graph theory
+  - puzzle solving
+  - SIR model

@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./systems-at-play/pandemic-simulator/simulation"
+    ]
+}
