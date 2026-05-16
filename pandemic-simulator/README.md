@@ -1,5 +1,5 @@
 # Pandemic Spread Simulator
-A stochastic network-based pandemic simulator inspired by the board game *Pandemic*. Models disease spread across a weighted city graph using a discrete-time SIR framework, with player roles that intervene in the system — then analyzes their effectiveness via Monte Carlo simulation.
+A stochastic network-based pandemic simulator inspired by the board game *Pandemic*. Models disease spread across a weighted city graph using a discrete-time SIR framework, with player roles that intervene in the system then analyzes their effectiveness via Monte Carlo simulation.
 
 ## What it models
 Cities are nodes in a weighted graph. Each edge represents a travel route where higher weight means more passenger movement and faster cross-city spread. The disease evolves each "week" (step) through:
