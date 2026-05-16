@@ -33,7 +33,7 @@ Each project is designed to be:
 - emergent behavior in complex systems  
 
 ## Why this exists
-Many real-world systems—especially environmental systems—behave less like linear equations and more like games:
+Many real-world systems, especially environmental systems, behave less like linear equations and more like games:
 - Small changes cascade.  
 - Rules interact.  
 - Outcomes emerge from many parts acting together.  
@@ -44,7 +44,7 @@ This repo is an ongoing attempt to make those systems visible, testable, and und
 ## Featured experiments
 - Pandemic spread simulator (network contagion model)  
 - Board game probability engines  
-- Puzzle solvers (constraint + logic systems)  
+- Puzzle solvers (constraint and logic systems)  
 - Simple AI agents for rule-based games  
 - Decision tree & strategy visualization tools  
 
