@@ -2,8 +2,8 @@
 
 > Exploring games, puzzles, simulations, and emergent behavior through code.
 
-## Come In And Play!
-I’m a lifelong gamer—board games, card games, video games, logic puzzles, and codebreaking challenges have always been part of how I think.
+## Come and Play!
+I’m a lifelong gamer; board games, card games, video games, logic puzzles, and codebreaking challenges have always been part of how I think.
 Over time, I’ve realized that the same mental patterns used in games are deeply connected to how I approach environmental modeling and systems analysis.
 
 Games train intuition for:
