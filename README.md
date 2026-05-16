@@ -50,8 +50,8 @@ This repo is an ongoing attempt to make those systems visible, testable, and und
 
 ## Tech stack
 - Python  
-- NumPy / pandas  
-- matplotlib / plotly  
+- NumPy/pandas  
+- matplotlib/plotly  
 - networkx  
 - Jupyter notebooks  
 

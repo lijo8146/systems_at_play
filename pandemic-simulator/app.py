@@ -1,17 +1,16 @@
 """
-app.py — Interactive Streamlit dashboard for the pandemic simulator.
+app.py interactive Streamlit dashboard for the pandemic simulator.
 
 Run with:
     streamlit run app.py
 
 Features
-────────
-• Role picker in the sidebar (checkboxes for each player role)
-• Configurable simulation parameters (expandable)
-• Animated city-network graph that updates step-by-step
-• Live infection timeline with per-city curves
-• Real-time metrics: cure progress, total infected, outbreak count
-• Monte Carlo quick-compare panel (optional, runs in sidebar)
+- Role picker in the sidebar (checkboxes for each player role)
+- Configurable simulation parameters (expandable)
+- Animated city-network graph that updates step-by-step
+- Live infection timeline with per-city curves
+- Real-time metrics: cure progress, total infected, outbreak count
+- Monte Carlo quick-compare panel (optional, runs in sidebar)
 """
 
 from __future__ import annotations
@@ -38,9 +37,7 @@ from simulation import (
 from simulation.roles import PlayerRole
 from analysis.monte_carlo import run_experiment, analyse, build_scenarios
 
-# ─────────────────────────────────────────────────────────────────────────────
 #  Constants
-# ─────────────────────────────────────────────────────────────────────────────
 
 MAX_STEPS = 80
 CITY_POSITIONS: dict[str, tuple[float, float]] = {
@@ -66,9 +63,7 @@ ROLE_META = {
 
 CITY_NAMES = list(CITY_POSITIONS.keys())
 
-# ─────────────────────────────────────────────────────────────────────────────
 #  Simulation runner  (caches frames in session_state)
-# ─────────────────────────────────────────────────────────────────────────────
 
 def run_and_capture(
     roles: list[PlayerRole],
@@ -115,9 +110,7 @@ def run_and_capture(
     return frames
 
 
-# ─────────────────────────────────────────────────────────────────────────────
 #  Plotly figures
-# ─────────────────────────────────────────────────────────────────────────────
 
 def make_network_fig(frame: dict) -> go.Figure:
     """Render the city network for one simulation frame."""
@@ -251,9 +244,7 @@ def make_timeline_fig(frames: list[dict], current_step: int) -> go.Figure:
     return fig
 
 
-# ─────────────────────────────────────────────────────────────────────────────
 #  Page layout
-# ─────────────────────────────────────────────────────────────────────────────
 
 st.set_page_config(
     page_title="Pandemic Simulator",
@@ -271,7 +262,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
+# Sidebar
 
 with st.sidebar:
     st.title("🦠 Pandemic Simulator")
@@ -307,7 +298,7 @@ with st.sidebar:
         spread_rate = st.slider("Base spread rate (β)", 0.10, 0.80, 0.45, step=0.01)
         recovery_rate = st.slider("Recovery rate (γ)", 0.01, 0.15, 0.04, step=0.01)
         travel_factor = st.slider("Travel spread factor", 0.01, 0.40, 0.18, step=0.01)
-        cure_gain = st.slider("Cure gain / step", 0.005, 0.05, 0.013, step=0.001,
+        cure_gain = st.slider("Cure gain/step", 0.005, 0.05, 0.013, step=0.001,
                               format="%.3f")
 
     params = InfectionParams(
@@ -325,7 +316,7 @@ with st.sidebar:
     mc_n = st.slider("Simulations per scenario", 50, 500, 150, step=50)
     mc_btn = st.button("Run role comparison", use_container_width=True)
 
-# ── Session state initialisation ──────────────────────────────────────────────
+# Session state initialisation 
 
 for key, default in [
     ("frames", None),
@@ -336,7 +327,7 @@ for key, default in [
     if key not in st.session_state:
         st.session_state[key] = default
 
-# ── Trigger: run simulation ───────────────────────────────────────────────────
+# Trigger: run simulation
 
 if run_btn:
     with st.spinner("Running simulation…"):
@@ -344,32 +335,30 @@ if run_btn:
         st.session_state.frame_idx = 0
         st.session_state.playing   = True
 
-# ── Trigger: Monte Carlo ──────────────────────────────────────────────────────
+# Trigger: Monte Carlo
 
 if mc_btn:
     with st.spinner(f"Running {mc_n} simulations per scenario…"):
         df = run_experiment(n=mc_n, verbose=False)
         st.session_state.mc_stats = analyse(df)
 
-# ── Main panel ────────────────────────────────────────────────────────────────
+# Main panel
 
 if st.session_state.frames is None:
     st.markdown(
         """
-        ## Welcome to the Pandemic Simulator 🦠
+        ## Welcome to the Pandemic Simulator 
 
         Pick **player roles** in the sidebar, then hit **▶ Run simulation** to watch
         the infection cascade across the 10-city network in real time.
 
-        ---
         **How it works:**
         - Each city runs a stochastic SIR model: susceptible → infected → recovered
         - Cities spread disease to neighbours via weighted travel routes
         - Player roles modify spread rates, cure speed, or can lock down cities
         - Win by reaching 100 % cure progress before the pandemic spirals
 
-        ---
-        *Try the Scientist role first — cure speed is the most critical lever.*
+        *Try the Scientist role first as cure speed is the most critical lever.*
         """
     )
 else:
@@ -385,7 +374,7 @@ else:
         else:
             st.session_state.playing = False
 
-    # ── Controls bar ──────────────────────────────────────────────────────────
+    # Controls bar
     ctrl_cols = st.columns([0.12, 0.12, 0.76])
     with ctrl_cols[0]:
         if st.button("⏮ Reset"):
@@ -414,7 +403,7 @@ else:
 
     frame = frames[st.session_state.frame_idx]
 
-    # ── Metrics row ───────────────────────────────────────────────────────────
+    # Metrics row
     m1, m2, m3, m4, m5 = st.columns(5)
     last = frames[-1]
     m1.metric("Step", f"{frame['step']} / {total_frames - 1}")
@@ -424,7 +413,7 @@ else:
     outcome_color = "🟢" if last.get("outcome", "").startswith("WIN") else "🔴"
     m5.metric("Outcome", f"{outcome_color} {last.get('outcome', '…')}")
 
-    # ── Network + most-infected table ─────────────────────────────────────────
+    # Network most-infected table
     net_col, table_col = st.columns([0.70, 0.30])
     with net_col:
         st.plotly_chart(make_network_fig(frame), use_container_width=True, key="network")
@@ -442,14 +431,14 @@ else:
         df_cities = pd.DataFrame(rows).sort_values("Infected", ascending=False)
         st.dataframe(df_cities, hide_index=True, use_container_width=True, height=380)
 
-    # ── Timeline ──────────────────────────────────────────────────────────────
+    # Timeline
     st.plotly_chart(
         make_timeline_fig(frames, st.session_state.frame_idx),
         use_container_width=True,
         key="timeline",
     )
 
-# ── Monte Carlo results panel ─────────────────────────────────────────────────
+# Monte Carlo results panel
 
 if st.session_state.mc_stats is not None:
     st.divider()
