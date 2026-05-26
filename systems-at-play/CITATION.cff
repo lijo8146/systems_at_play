@@ -2,6 +2,7 @@ cff-version: 1.2.0
 message: "If you use this repository in a course, talk, or paper, please cite it as below."
 type: software
 title: "Systems at Play: Computational Experiments in Games, Puzzles, and Simulation"
+author: Lilly Jones, PhD
 abstract: >
   A curated collection of computational experiments using games, puzzles, and
   simulations as entry points for exploring probability, strategy, network dynamics,
