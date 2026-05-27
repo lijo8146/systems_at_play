@@ -32,7 +32,7 @@ Each experiment tries to answer a question in the form: *"What actually happens 
 ## Who this is for
 - **Students** learning probability, algorithms, or simulation for the first time
 - **Educators** looking for worked examples that connect math to familiar contexts
-- **Developers** building a portfolio that shows systems thinking, not just syntax
+- **Developers** building a portfolio that shows systems thinking
 - **Curious people** who want to poke at how things work
 
 Every module includes:
