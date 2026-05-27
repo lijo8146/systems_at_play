@@ -15,6 +15,8 @@ Each experiment is self-contained and designed to be readable by someone new to 
 | [ Puzzle Solvers](./puzzle-solvers/) | Sudoku and maze generation/solving | Backtracking, constraint propagation, BFS/DFS |
 | [ Game Balance Experiments](./game-balance-experiments/) | How small rule changes break (or fix) games | Dominant strategies, variance, payoff matrices |
 | [ Decision Tree Visualizations](./decision-tree-visualizations/) | Search and strategy in two-player games | Minimax, game trees, evaluation functions |
+| [ Logic Grid Solver ](./logic_grid_solver) | A logic grid puzzle gives you N categories with N items each and a set of clues | Constraint Satisfaction Problem (CSP)  |
+| [ Wingspan ](./wingspan) | Stochastic Modeling of Resource Production | Breakeven analysis, engine output over time, variance, marginal value heatmap |
 
 ## Philosophy
 A lot of computational thinking is taught through problems that feel abstract and arbitrary. This repository takes a different approach:
