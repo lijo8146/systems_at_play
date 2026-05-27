@@ -1,12 +1,11 @@
 """
-game.py — Wildfire suppression resource allocation game layer.
+game.py wildfire suppression resource allocation game layer.
 
 This module wraps the cellular automaton simulation with a strategic
 decision layer: a player allocates suppression resources each turn
 to minimize burned area.
 
 Suppression actions
--------------------
 FIREBREAK      : Remove fuel from a cell (fire cannot spread through it).
                  Cost: 2 points. Permanent. Best used proactively.
 RETARDANT_DROP : Reduce P(ignition) by 70% in a 3×3 area for 3 timesteps.
@@ -15,18 +14,16 @@ CREW_DEPLOY    : Suppress one BURNING cell (extinguish it immediately).
                  Cost: 1 point. Reactive. Cannot prevent ignition.
 
 Budget
-------
 The player receives a fixed budget of suppression points per timestep.
 Unspent points do not carry over. This represents the real-world constraint
 that suppression resources are limited and must be allocated in real time.
 
 Strategies
-----------
 REACTIVE       : Spend all points on CREW_DEPLOY at burning cells.
                  Requires no prediction of fire movement.
 PROACTIVE      : Spend points on FIREBREAK along projected fire path.
                  Efficient if prediction is correct; wasted if wind shifts.
-MIXED          : Firebreaks on primary path + crew on flanks.
+MIXED          : Firebreaks on primary path and crew on flanks.
 """
 
 from __future__ import annotations
@@ -43,7 +40,7 @@ from terrain import Terrain, GridCell, FireState, FuelType, FUEL_PROPS, Wind
 from simulation import run_simulation, SimResult
 
 
-# ── Action types ──────────────────────────────────────────────────────────────
+# Action types
 
 class ActionType(Enum):
     FIREBREAK       = "firebreak"
@@ -71,7 +68,7 @@ class SuppressionAction:
     col         : int
 
 
-# ── Expected value of suppression actions ────────────────────────────────────
+# Expected value of suppression actions
 
 def ev_firebreak(
     terrain    : Terrain,
@@ -154,7 +151,7 @@ def ev_retardant(terrain: Terrain, row: int, col: int, wind: Wind) -> float:
     return total
 
 
-# ── Built-in strategies ───────────────────────────────────────────────────────
+# Built-in strategies
 
 StrategyFn = Callable[[Terrain, Wind, int, int], list[SuppressionAction]]
 
@@ -261,7 +258,7 @@ STRATEGIES: dict[str, StrategyFn] = {
 }
 
 
-# ── Apply suppression actions to terrain ─────────────────────────────────────
+# Apply suppression actions to terrain 
 
 def apply_actions(
     terrain: Terrain,
@@ -286,7 +283,7 @@ def apply_actions(
                 cell.fuel_type  = FuelType.BURNED
 
 
-# ── Suppressed simulation run ─────────────────────────────────────────────────
+# Suppressed simulation run
 
 def run_with_suppression(
     terrain_seed    : int,

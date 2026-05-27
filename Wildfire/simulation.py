@@ -1,8 +1,7 @@
 """
-simulation.py — Cellular automaton wildfire spread engine.
+simulation.py cellular automaton wildfire spread engine.
 
 Spread model
-------------
 Each timestep, every BURNING cell attempts to ignite each burnable neighbor:
 
     P(ignition) = base_rate[fuel_type]
@@ -15,18 +14,16 @@ This is a simplified version of the physical spread model in FARSITE
 (Fire Area Simulator), calibrated to produce realistic spread rates at
 moderate wind/moisture conditions.
 
-Key parameters and their physical meaning
-------------------------------------------
+Parameters and their physical meaning
 base_spread_rate : determined by fuel type (grass spreads fastest)
 slope_factor     : fire spreads 30-50% faster per 10% slope uphill,
                    slower downhill (simplified version of Rothermel slope factor)
 wind_factor      : fire spreads up to 1.8× faster directly downwind,
                    0.3× upwind (dot product alignment with wind vector)
-moisture         : at moisture=0 (bone dry) → full spread rate
-                   at moisture=1 (saturated) → spread rate → 0
+moisture         : at moisture=0 (bone dry) full spread rate
+                   at moisture=1 (saturated) spread rate → 0
 
 Timestep
---------
 Each timestep represents approximately 15 minutes of real fire time
 (calibrated so a typical grass fire at moderate wind crosses a 1-hectare
 cell in 1–3 timesteps, consistent with NFFL fuel model 1 spread rates).
@@ -46,7 +43,7 @@ import numpy as np
 from terrain import Terrain, GridCell, FireState, FuelType, FUEL_PROPS, Wind
 
 
-# ── Spread physics ────────────────────────────────────────────────────────────
+# Spread physics
 
 def slope_factor(from_elev: float, to_elev: float) -> float:
     """
@@ -90,10 +87,10 @@ def ignition_probability(
     retardant_mod = 0.3 if target_cell.retardant > 0 else 1.0
 
     p = base * slope * wf * moist * retardant_mod
-    return min(p, 0.95)   # cap at 95% — small random survival chance
+    return min(p, 0.95)   # cap at 95% a small random survival chance
 
 
-# ── Simulation result ─────────────────────────────────────────────────────────
+# Simulation result
 
 @dataclass
 class SimResult:
@@ -101,7 +98,6 @@ class SimResult:
     Output of a single fire simulation run.
 
     Attributes
-    ----------
     terrain          : final terrain state (fire states updated in place)
     timesteps        : number of timesteps until fire extinguished
     cells_burned     : count of cells that burned
@@ -119,7 +115,7 @@ class SimResult:
     perimeter_history: list[set[tuple[int,int]]]    = field(default_factory=list)
 
 
-# ── Main simulation function ───────────────────────────────────────────────────
+# Main simulation function
 
 def run_simulation(
     terrain     : Terrain,
@@ -132,7 +128,6 @@ def run_simulation(
     Run the cellular automaton fire spread simulation.
 
     Parameters
-    ----------
     terrain       : Terrain object (modified in place)
     ignition_pt   : (row, col) of initial ignition
     wind          : Wind conditions (fixed for this run)
@@ -140,7 +135,6 @@ def run_simulation(
     rng           : random generator (None → use terrain's rng)
 
     Returns
-    -------
     SimResult with final state and history.
     """
     if rng is None:

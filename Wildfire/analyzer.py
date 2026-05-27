@@ -1,10 +1,10 @@
 """
-analyzer.py — Monte Carlo wildfire suppression strategy comparison.
+analyzer.py Monte Carlo wildfire suppression strategy comparison.
 
 Runs N simulated fires per strategy across a range of wind/moisture
 conditions and compares outcomes: cells burned, value saved, variance.
 
-This is the analytical heart of the wildfire project — showing that
+This is the analytical heart of the wildfire project showing that
 the "best" suppression strategy depends on environmental conditions,
 and that proactive strategies have higher variance than reactive ones.
 """
@@ -99,7 +99,7 @@ def run_baseline(config: MonteCarloConfig) -> pd.DataFrame:
     )
     terrain_seeds = rng.integers(1000, 9999, config.n_runs)
 
-    print(f"  Running Baseline / No suppression ({config.n_runs} runs)...")
+    print(f"  Running Baseline/No suppression ({config.n_runs} runs)...")
     for i in range(config.n_runs):
         terrain = Terrain(40, 40, seed=int(terrain_seeds[i]),
                           moisture_mean=config.moisture_mean,

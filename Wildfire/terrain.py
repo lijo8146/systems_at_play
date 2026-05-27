@@ -1,8 +1,7 @@
 """
-terrain.py — Wildfire landscape grid: fuel types, elevation, wind, fire state.
+terrain.py wildfire landscape grid: fuel types, elevation, wind, fire state.
 
 Grid representation
--------------------
 A 2D array of Cell objects on a configurable grid (default 40×40).
 Each cell = 1 hectare (100m × 100m).
 
@@ -15,7 +14,6 @@ waves at multiple frequencies) to produce realistic ridge-and-valley
 terrain without requiring real DEM data.
 
 Wind
-----
 Wind is represented as a direction (degrees from north, clockwise) and
 speed (m/s). It is fixed per simulation run in the base model.
 Direction affects spread probability via a dot-product alignment factor:
@@ -32,17 +30,17 @@ from typing import NamedTuple
 import numpy as np
 
 
-# ── Enumerations ──────────────────────────────────────────────────────────────
+# Enumerations
 
 class FuelType(Enum):
     GRASS   = "grass"     # fastest spread, low intensity
     SHRUB   = "shrub"     # moderate spread, moderate intensity
     FOREST  = "forest"    # slower spread, high intensity, high value
-    SLASH   = "slash"     # logging debris — extreme spread rate
-    ROCK    = "rock"      # no fuel — natural firebreak
-    WATER   = "water"     # no fuel — natural firebreak
-    ROAD    = "road"      # no fuel — artificial firebreak
-    BURNED  = "burned"    # already consumed — no re-ignition
+    SLASH   = "slash"     # logging debris  extreme spread rate
+    ROCK    = "rock"      # no fuel  natural firebreak
+    WATER   = "water"     # no fuel  natural firebreak
+    ROAD    = "road"      # no fuel  artificial firebreak
+    BURNED  = "burned"    # already consumed no re-ignition
 
 
 class FireState(Enum):
@@ -52,7 +50,7 @@ class FireState(Enum):
     SUPPRESSED  = auto()   # actively suppressed by crew or retardant
 
 
-# ── Fuel properties ───────────────────────────────────────────────────────────
+# Fuel properties
 
 @dataclass(frozen=True)
 class FuelProperties:
@@ -82,7 +80,7 @@ FIRE_STATE_COLORS = {
 }
 
 
-# ── Cell ──────────────────────────────────────────────────────────────────────
+# Cell
 
 class Cell(NamedTuple):
     row: int
@@ -119,7 +117,7 @@ class GridCell:
         return FUEL_PROPS[self.fuel_type].color
 
 
-# ── Wind ──────────────────────────────────────────────────────────────────────
+# Wind
 
 @dataclass
 class Wind:
@@ -129,7 +127,7 @@ class Wind:
     direction_deg : degrees clockwise from north (0=N, 90=E, 180=S, 270=W)
     speed_ms      : wind speed in m/s (1 m/s ≈ light breeze; 10 m/s = strong wind)
     """
-    direction_deg : float = 180.0    # southerly — blows north by default
+    direction_deg : float = 180.0    # southerly blows north by default
     speed_ms      : float = 5.0
 
     @property
@@ -161,19 +159,18 @@ class Wind:
         dr_n, dc_n = dr/mag, dc/mag
         wd_r, wd_c = self.direction_vec
         dot = dr_n*wd_r + dc_n*wd_c   # -1 to +1
-        # Wind speed factor: 10 m/s → up to 1.5× amplification downwind
+        # Wind speed factor: 10 m/s to up to 1.5× amplification downwind
         speed_factor = min(self.speed_ms / 10.0, 0.8)
         return 1.0 + speed_factor * dot
 
 
-# ── Terrain grid ──────────────────────────────────────────────────────────────
+# Terrain grid
 
 class Terrain:
     """
     A 2D grid of GridCell objects representing the wildfire landscape.
 
     Parameters
-    ----------
     rows, cols   : grid dimensions (default 40×40)
     seed         : random seed for reproducible terrain generation
     moisture_mean: mean moisture level (0.0–1.0)
@@ -198,7 +195,7 @@ class Terrain:
         self.fuel_map  = self._generate_fuel_map()
         self.cells     = self._build_cells()
 
-    # ── Private generation methods ─────────────────────────────────────────
+    # Private generation methods
 
     def _generate_elevation(self) -> np.ndarray:
         """
@@ -227,11 +224,11 @@ class Terrain:
     def _generate_moisture(
         self, mean: float, std: float
     ) -> np.ndarray:
-        """Per-cell moisture — correlated with elevation (valleys wetter)."""
+        """Per-cell moisture correlated with elevation (valleys wetter)."""
         base = self.rng.normal(mean, std, (self.rows, self.cols))
         # Low elevation → slightly wetter
         elev_norm = (self.elevation - self.elevation.min()) / (
-            self.elevation.ptp() + 1e-9
+            (self.elevation.max() - self.elevation.min()) + 1e-9
         )
         base += 0.1 * (1 - elev_norm)
         return np.clip(base, 0.0, 1.0)
@@ -240,15 +237,15 @@ class Terrain:
         """
         Fuel type array based on elevation bands and random noise.
 
-        Low elevation  → grass / shrub (open areas)
-        Mid elevation  → shrub / forest mix
-        High elevation → forest / rock
-        Water bodies   → randomly placed valleys
-        Roads          → two diagonal lines crossing the grid
+        Low elevation  : grass / shrub (open areas)
+        Mid elevation  : shrub / forest mix
+        High elevation : forest / rock
+        Water bodies   : randomly placed valleys
+        Roads          : two diagonal lines crossing the grid
         """
         fuel = np.full((self.rows, self.cols), FuelType.GRASS)
         elev_norm = (self.elevation - self.elevation.min()) / (
-            self.elevation.ptp() + 1e-9
+            (self.elevation.max() - self.elevation.min()) + 1e-9
         )
 
         for r in range(self.rows):
@@ -310,7 +307,7 @@ class Terrain:
             for r in range(self.rows)
         ]
 
-    # ── Public interface ───────────────────────────────────────────────────
+    # Public interface
 
     def cell(self, row: int, col: int) -> GridCell:
         return self.cells[row][col]
@@ -369,3 +366,4 @@ class Terrain:
                 hex_c = cell.color.lstrip("#")
                 rgb[r, c] = [int(hex_c[i:i+2], 16) for i in (0, 2, 4)]
         return rgb
+
