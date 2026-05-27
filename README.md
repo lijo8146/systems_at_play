@@ -1,5 +1,5 @@
 # Systems at Play 
-`https://doi.org/10.5281/zenodo.20418769`
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20418769.svg)](https://doi.org/10.5281/zenodo.20418769)
 
 > *Complex systems become intuitive when you can play with them.*
 
